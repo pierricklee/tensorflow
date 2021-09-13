@@ -52,6 +52,8 @@ profiler = _xla.profiler
 xla_platform_names = {
     'cpu': 'Host',
     'gpu': 'CUDA',
+    'ipu': 'HOST',
+    # 'ipu': 'POPLAR',
 }
 
 
@@ -93,6 +95,9 @@ def _gpu_backend_factory(distributed_client=None, node_id=0):
 def _tpu_backend_factory():
   return _xla.get_tpu_client(asynchronous=True)
 
+def _ipu_backend_factory():
+  return _xla.get_ipu_client(asynchronous=True)
+
 
 # Backend factories, keyed by user-visible name, in increasing priority order.
 _local_backend_factories = collections.OrderedDict([
@@ -100,6 +105,7 @@ _local_backend_factories = collections.OrderedDict([
     ('cpu', _cpu_backend_factory),
     ('gpu', _gpu_backend_factory),
     ('tpu', _tpu_backend_factory),
+    ('ipu', _ipu_backend_factory),
 ])
 
 

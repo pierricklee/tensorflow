@@ -595,6 +595,14 @@ PYBIND11_MODULE(xla_extension, m) {
         return std::make_shared<PyClient>(std::move(client));
       },
       py::arg("asynchronous") = true);
+  m.def(
+      "get_ipu_client",
+      [](bool asynchronous) -> StatusOr<std::shared_ptr<PyClient>> {
+        TF_ASSIGN_OR_RETURN(std::shared_ptr<PjRtClient> client,
+                            GetInterpreterClient(asynchronous));
+        return std::make_shared<PyClient>(std::move(client));
+      },
+      py::arg("asynchronous") = true);
 
   py::class_<Traceback::Frame>(m, "Frame")
       .def_readonly("file_name", &Traceback::Frame::file_name)
